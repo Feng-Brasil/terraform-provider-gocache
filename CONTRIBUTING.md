@@ -20,7 +20,7 @@ mise install
 
 ```bash
 # bash (~/.bashrc)
-echo "eval \"$(mise activate bash)\""
+eval "$(mise activate bash)"
 
 # zsh (~/.zshrc)
 eval "$(mise activate zsh)"
