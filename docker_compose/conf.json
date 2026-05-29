@@ -1,5 +1,0 @@
-{
-  "bind_address": "0.0.0.0:9090",
-  "db_connection": "host=db port=5432 user=postgres password=password dbname=products sslmode=disable",
-  "metrics_address": "localhost:9102"
-}
