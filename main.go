@@ -10,7 +10,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 
-	"terraform-provider-gocache/internal/provider"
+	"github.com/Feng-Brasil/terraform-provider-gocache/internal/provider"
 )
 
 var (

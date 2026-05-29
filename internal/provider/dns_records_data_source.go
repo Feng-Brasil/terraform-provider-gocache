@@ -7,7 +7,7 @@ import (
 	"context"
 	"fmt"
 
-	"terraform-provider-gocache/internal/client/gocache"
+	"github.com/Feng-Brasil/terraform-provider-gocache/internal/client/gocache"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
