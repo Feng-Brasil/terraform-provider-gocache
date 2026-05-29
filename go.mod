@@ -1,4 +1,4 @@
-module terraform-provider-gocache
+module github.com/Feng-Brasil/terraform-provider-gocache
 
 go 1.25.8
 
