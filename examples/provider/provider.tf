@@ -1,6 +1,4 @@
 # Configuration-based authentication
-provider "hashicups" {
-  username = "education"
-  password = "test123"
-  host     = "http://localhost:19090"
+provider "gocache" {
+  token = "gocache_token"
 }
