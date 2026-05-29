@@ -1,4 +1,4 @@
-module terraform-provider-hashicups
+module terraform-provider-gocache
 
 go 1.25.8
 
