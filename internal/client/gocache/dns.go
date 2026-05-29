@@ -3,6 +3,7 @@ package gocache
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -39,16 +40,26 @@ func (c *Client) CreateDNSRecord(domain string, record DNSRecordRequest) (*DNSRe
 
 	defer resp.Body.Close()
 
-	if resp.StatusCode >= 400 {
-		return nil, fmt.Errorf("failed to create DNS record, status code: %d", resp.StatusCode)
+	body, err := io.ReadAll(resp.Body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("failed to create DNS record: HTTP %d: %s", resp.StatusCode, strings.TrimSpace(string(body)))
 	}
 
 	var response DNSCreateResponse
 
-	err = json.NewDecoder(resp.Body).Decode(&response)
+	err = json.Unmarshal(body, &response)
 
 	if err != nil {
 		return nil, err
+	}
+
+	if response.StatusCode != 1 {
+		return nil, fmt.Errorf("failed to create DNS record: status_code %d: %s", response.StatusCode, strings.TrimSpace(string(body)))
 	}
 
 	if len(response.Response.Records) == 0 {
@@ -81,16 +92,26 @@ func (c *Client) ListDNSRecords(domain string) ([]DNSRecord, error) {
 
 	defer resp.Body.Close()
 
-	if resp.StatusCode >= 400 {
-		return nil, fmt.Errorf("failed listing DNS records, status code: %d", resp.StatusCode)
+	body, err := io.ReadAll(resp.Body)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("failed listing DNS records: HTTP %d: %s", resp.StatusCode, strings.TrimSpace(string(body)))
 	}
 
 	var response DNSRecordsResponse
 
-	err = json.NewDecoder(resp.Body).Decode(&response)
+	err = json.Unmarshal(body, &response)
 
 	if err != nil {
 		return nil, err
+	}
+
+	if response.StatusCode != 1 {
+		return nil, fmt.Errorf("failed listing DNS records: status_code %d: %s", response.StatusCode, strings.TrimSpace(string(body)))
 	}
 
 	return response.Response.Records, nil
@@ -127,8 +148,26 @@ func (c *Client) UpdateDNSRecord(domain string, recordID string, record DNSRecor
 
 	defer resp.Body.Close()
 
-	if resp.StatusCode >= 400 {
-		return fmt.Errorf("failed updating DNS record, status code: %d", resp.StatusCode)
+	body, err := io.ReadAll(resp.Body)
+
+	if err != nil {
+		return err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("failed updating DNS record: HTTP %d: %s", resp.StatusCode, strings.TrimSpace(string(body)))
+	}
+
+	var response APIResponse
+
+	err = json.Unmarshal(body, &response)
+
+	if err != nil {
+		return err
+	}
+
+	if response.StatusCode != 1 {
+		return fmt.Errorf("failed updating DNS record: status_code %d: %s", response.StatusCode, strings.TrimSpace(string(body)))
 	}
 
 	return nil
@@ -160,8 +199,26 @@ func (c *Client) DeleteDNSRecord(domain string, recordID string) error {
 
 	defer resp.Body.Close()
 
-	if resp.StatusCode >= 400 {
-		return fmt.Errorf("failed deleting DNS record, status code: %d", resp.StatusCode)
+	body, err := io.ReadAll(resp.Body)
+
+	if err != nil {
+		return err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("failed deleting DNS record: HTTP %d: %s", resp.StatusCode, strings.TrimSpace(string(body)))
+	}
+
+	var response APIResponse
+
+	err = json.Unmarshal(body, &response)
+
+	if err != nil {
+		return err
+	}
+
+	if response.StatusCode != 1 {
+		return fmt.Errorf("failed deleting DNS record: status_code %d: %s", response.StatusCode, strings.TrimSpace(string(body)))
 	}
 
 	return nil

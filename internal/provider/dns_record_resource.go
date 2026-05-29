@@ -3,7 +3,7 @@ package provider
 import (
 	"context"
 	"fmt"
-	"terraform-provider-hashicups/internal/gocache"
+	"terraform-provider-gocache/internal/client/gocache"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -12,6 +12,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+)
+
+const (
+	DEFAULT_TTL   = 300
+	DEFAULT_CLOUD = 0
 )
 
 type dnsRecordResourceModel struct {
@@ -98,12 +103,12 @@ func (r *dnsRecordResource) Create(ctx context.Context, req resource.CreateReque
 		return
 	}
 
-	if plan.TTL.IsNull() {
-		plan.TTL = types.Int64Value(120)
+	if plan.TTL.IsNull() || plan.TTL.IsUnknown() {
+		plan.TTL = types.Int64Value(DEFAULT_TTL)
 	}
 
 	if plan.Cloud.IsNull() || plan.Cloud.IsUnknown() {
-		plan.Cloud = types.Int64Value(0)
+		plan.Cloud = types.Int64Value(DEFAULT_CLOUD)
 	}
 
 	record := gocache.DNSRecordRequest{
@@ -188,11 +193,11 @@ func (r *dnsRecordResource) Update(ctx context.Context, req resource.UpdateReque
 	}
 
 	if plan.TTL.IsNull() || plan.TTL.IsUnknown() {
-		plan.TTL = types.Int64Value(120)
+		plan.TTL = types.Int64Value(DEFAULT_TTL)
 	}
 
 	if plan.Cloud.IsNull() || plan.Cloud.IsUnknown() {
-		plan.Cloud = types.Int64Value(0)
+		plan.Cloud = types.Int64Value(DEFAULT_CLOUD)
 	}
 
 	record := gocache.DNSRecordRequest{

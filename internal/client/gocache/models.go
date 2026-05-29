@@ -32,3 +32,7 @@ type DNSCreateResponse struct {
 		Records []DNSRecord `json:"records"`
 	} `json:"response"`
 }
+
+type APIResponse struct {
+	StatusCode int `json:"status_code"`
+}
