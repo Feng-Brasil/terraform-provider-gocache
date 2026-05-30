@@ -29,7 +29,7 @@ func main() {
 	flag.Parse()
 
 	opts := providerserver.ServeOpts{
-		Address: "registry.terraform.io/feng/gocache",
+		Address: "registry.terraform.io/Feng-Brasil/gocache",
 		Debug:   debug,
 	}
 
