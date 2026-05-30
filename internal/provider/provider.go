@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/Feng-Brasil/terraform-provider-gocache/internal/client/gocache"
+	"github.com/Feng-Brasil/terraform-provider-gocache/internal/services/dns_record"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -118,12 +119,12 @@ func (p *gocacheProvider) Configure(ctx context.Context, req provider.ConfigureR
 
 func (p *gocacheProvider) DataSources(_ context.Context) []func() datasource.DataSource {
 	return []func() datasource.DataSource{
-		NewDNSRecordsDataSource,
+		dns_record.NewDNSRecordsDataSource,
 	}
 }
 
 func (p *gocacheProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		NewDNSRecordResource,
+		dns_record.NewDNSRecordResource,
 	}
 }
