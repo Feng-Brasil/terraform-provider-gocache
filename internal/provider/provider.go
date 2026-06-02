@@ -9,6 +9,7 @@ import (
 
 	"github.com/Feng-Brasil/terraform-provider-gocache/internal/client/gocache"
 	"github.com/Feng-Brasil/terraform-provider-gocache/internal/services/dns_record"
+	"github.com/Feng-Brasil/terraform-provider-gocache/internal/services/smart_rule"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/path"
@@ -126,5 +127,7 @@ func (p *gocacheProvider) DataSources(_ context.Context) []func() datasource.Dat
 func (p *gocacheProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		dns_record.NewDNSRecordResource,
+		smart_rule.NewGeneralSmartRuleResource,
+		smart_rule.NewRedirectSmartRuleResource,
 	}
 }
